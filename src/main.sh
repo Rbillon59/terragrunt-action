@@ -86,23 +86,14 @@ function comment {
     comment_url=$(jq -r '.issue.comments_url' "$GITHUB_EVENT_PATH")
   fi
   if [[ "${comment_url}" == "" || "${comment_url}" == "null" ]]; then
-    log "Skipping comment as there is no comment URL"
+    log "Skipping comment as there is not comment url"
     return
   fi
-
-  local -r max_comment_size=65535
   local -r escaped_message=$(printf '%s' "$message" | sed 's/\\/\\\\/g; s/"/\\"/g; s/$/\\n/g' | tr -d '\n')
-  local message_length=${#escaped_message}
-  local start=0
-
-  while [[ $start -lt $message_length ]]; do
-    local chunk="${escaped_message:start:max_comment_size}"
-    local -r tmpfile=$(mktemp)
-    echo "{\"body\": \"$chunk\"}" > "$tmpfile"
-    curl -s -S -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" -d @"$tmpfile" "$comment_url"
-    rm "$tmpfile"
-    start=$((start + max_comment_size))
-  done
+  local -r tmpfile=$(mktemp)
+  echo "{\"body\": \"$escaped_message\"}" > "$tmpfile"
+  curl -s -S -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" -d @"$tmpfile" "$comment_url"
+  rm "$tmpfile"
 }
 
 function setup_git {
