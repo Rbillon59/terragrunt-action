@@ -239,11 +239,11 @@ function main {
   terragrunt_output=$(clean_colors "${terragrunt_log_content}")
 
   if [[ "${tg_comment}" == "1" ]]; then
-    comment "### Summary 🚀 
+    comment "<details>
+### Summary 🚀 
     #### Target directory: ${tg_dir}
     #### Command: ${tg_command}
     #### Terragrunt output:
-    <details>
       <summary>
         \`\`\`terraform
         ${terragrunt_output}
