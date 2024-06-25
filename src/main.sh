@@ -238,18 +238,21 @@ function main {
   local terragrunt_output
   terragrunt_output=$(clean_colors "${terragrunt_log_content}")
 
+  if [[ ${exit_code} -ne 0 ]]; then
+    ICON=❌
+  else
+    ICON=✅
+  fi
+
   if [[ "${tg_comment}" == "1" ]]; then
     comment "<details>
-### Summary 🚀 
-    #### Target directory: ${tg_dir}
-    #### Command: ${tg_command}
-    #### Terragrunt output:
-      <summary>
-        \`\`\`terraform
-        ${terragrunt_output}
-        \`\`\`
-      </summary>
-    </details>
+<summary>Result : ${ICON} Execution result of \"$tg_command\" in \"${tg_dir}\"</summary>
+
+\`\`\`terraform
+${terragrunt_output}
+\`\`\`
+
+</details>
     "
   fi
 
