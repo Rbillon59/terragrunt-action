@@ -246,7 +246,7 @@ function main {
 
   if [[ "${tg_comment}" == "1" ]]; then
     comment "<details>
-<summary>## 🚀 Summary - Execution of \"$tg_command\" in \"${tg_dir}\" ${ICON} </summary>
+<summary>${ICON} Summary - Execution of \"$tg_command\" in \"${tg_dir}\" </summary>
 
 \`\`\`terraform
 ${terragrunt_output}
