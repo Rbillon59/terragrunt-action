@@ -99,7 +99,6 @@ function comment {
     local chunk="${escaped_message:start:max_comment_size}"
     local -r tmpfile=$(mktemp)
     echo "{\"body\": \"$chunk\"}" > "$tmpfile"
-    echo "{\"body\": \"$chunk\"}"
     curl -s -S -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" -d @"$tmpfile" "$comment_url"
     rm "$tmpfile"
     start=$((start + max_comment_size))
